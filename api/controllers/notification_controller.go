@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/asimsharf/gatherhub/internal/models"
 	"github.com/asimsharf/gatherhub/internal/services"
@@ -35,7 +36,8 @@ func (c *NotificationController) CreateNotification(w http.ResponseWriter, r *ht
 
 func (c *NotificationController) GetNotification(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
-	item, err := c.Service.GetNotificationByID(id)
+	idUint, _ := strconv.ParseUint(id, 10, 32)
+	item, err := c.Service.GetNotificationByID(uint(idUint))
 	if err != nil {
 		http.Error(w, "Item not found", http.StatusNotFound)
 		return

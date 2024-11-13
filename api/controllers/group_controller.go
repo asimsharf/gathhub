@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/asimsharf/gatherhub/internal/models"
 	"github.com/asimsharf/gatherhub/internal/services"
@@ -35,7 +36,8 @@ func (c *GroupController) CreateGroup(w http.ResponseWriter, r *http.Request) {
 
 func (c *GroupController) GetGroup(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
-	item, err := c.Service.GetGroupByID(id)
+	idUint, _ := strconv.ParseUint(id, 10, 32)
+	item, err := c.Service.GetGroupByID(uint(idUint))
 	if err != nil {
 		http.Error(w, "Item not found", http.StatusNotFound)
 		return
